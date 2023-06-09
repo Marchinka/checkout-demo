@@ -7,7 +7,11 @@ interface ProductState {
 }
 
 const initialState: ProductState = {  
-    list: []
+    list: [
+      { id: 'A', price: 100 },
+      { id: 'B', price: 100 },
+      { id: 'C', price: 100 },
+    ]
 };
 
 export const productSlice = createSlice({
