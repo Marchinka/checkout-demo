@@ -7,13 +7,7 @@ import { Checkout } from "./Checkout/Checkout";
 import { ProductList } from "./ProductList/ProductList";
 import { RuleList } from "./RuleList/RuleList";
 import { Root } from "./Root/Root";
-
-export const AppRoutes = {
-    checkout: "/",
-    home: "/",
-    products: "products",
-    rules: "rules"
-};
+import { AppRoutes } from "./AppRoutes";
 
 export const AppRouter = createBrowserRouter([
     {

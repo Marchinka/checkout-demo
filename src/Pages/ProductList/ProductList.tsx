@@ -1,3 +1,7 @@
+import { PageTemplate } from "../../Components/PageTemplate/PageTemplate";
+
 export const ProductList = () => {
-    return <div>ProductList</div>
+    return <PageTemplate title={"Product List"}>
+                <div>Product list</div>
+            </PageTemplate>
 };

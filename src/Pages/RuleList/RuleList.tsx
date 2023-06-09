@@ -1,3 +1,7 @@
+import { PageTemplate } from "../../Components/PageTemplate/PageTemplate";
+
 export const RuleList = () => {
-    return <div>RuleList</div>
+    return <PageTemplate title={"Rule List"}>
+                <div>TODO</div>
+            </PageTemplate>
 };
