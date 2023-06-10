@@ -1,7 +1,7 @@
 import { Checkout } from "./Domain/Checkout";
 import { ICheckout } from "./Models/CheckoutItem";
 import { Catalogue } from "./Models/Product";
-import { IRule, IRuleSet, MultipriceRule } from "./Models/Rules";
+import { IRule, IRuleSet, MultipriceRule, PayForN_OneIsFreeRule } from "./Models/Rules";
 
 // | Item | Unit Price | Special Price |
 // | ---- | ---------- | ------------- |
@@ -25,310 +25,38 @@ const CATALOGUE: Catalogue= {
 const A_RULE: IRule = new MultipriceRule({ productId: "A", quantity: 3, specialPrice: 130 });
 const B_RULE: IRule = new MultipriceRule({ productId: "B", quantity: 2, specialPrice: 45 });
 
-test('0 items', () => {
-  // SETUP
-  
-  // Checkout
-  let checkoutList: string[] = [];
+// This rule is  not part of the assignment, but I invented it to test the rule engine and if the solution is generic enough
+const D_RULE: IRule = new PayForN_OneIsFreeRule({ productId: "D", quantity: 3 });
 
-  // EXERCISE
-  const actualResult = Checkout(checkoutList, CATALOGUE);
-
-  // ASSERT
-  expect(Object.keys(actualResult).length).toEqual(0);
-});
-
-test('A x 1', () => {
-  // SETUP
-  
-  // Checkout
-  const SUT = "A";
-  let checkoutList = [ SUT ];
-
-  // Expected
-  let expectedQuantity = checkoutList.length;
-  let expectedFullPrice = A_PRODUCT.price * checkoutList.length;
-  let expectedSpecialPrice = A_PRODUCT.price * checkoutList.length;
-
-  // EXERCISE
-  const actualResult = Checkout(checkoutList, CATALOGUE);
-
-  // ASSERT
-  expect(actualResult[SUT].quantity).toEqual(expectedQuantity);
-  expect(actualResult[SUT].fullPrice).toEqual(expectedFullPrice);
-  expect(actualResult[SUT].specialPrice).toEqual(expectedSpecialPrice);
-});
-
-test('A x 2', () => {
-  // SETUP
-  
-  // Checkout
-  const SUT = "A";
-  let checkoutList = [ SUT, SUT ];
-
-  // Expected
-  let expectedQuantity = checkoutList.length;
-  let expectedFullPrice = A_PRODUCT.price * checkoutList.length;
-  let expectedSpecialPrice = A_PRODUCT.price * checkoutList.length;
-  
-  // EXERCISE
-  const actualResult = Checkout(checkoutList, CATALOGUE);
-
-  // ASSERT
-  expect(actualResult[SUT].quantity).toEqual(expectedQuantity);
-  expect(actualResult[SUT].fullPrice).toEqual(expectedFullPrice);
-  expect(actualResult[SUT].specialPrice).toEqual(expectedSpecialPrice);
-});
-
-test('A x 3 no rule', () => {
-  // SETUP
-  
-  // Checkout
-  const SUT = "A";
-  let checkoutList = [ SUT, SUT, SUT ];
-
-  // Expected
-  let expectedQuantity = checkoutList.length;
-  let expectedFullPrice = A_PRODUCT.price * checkoutList.length;
-  let expectedSpecialPrice = A_PRODUCT.price * checkoutList.length;
-  
-  // EXERCISE
-  const actualResult = Checkout(checkoutList, CATALOGUE);
-
-  // ASSERT
-  expect(actualResult[SUT].quantity).toEqual(expectedQuantity);
-  expect(actualResult[SUT].fullPrice).toEqual(expectedFullPrice);
-  expect(actualResult[SUT].specialPrice).toEqual(expectedSpecialPrice);
-});
-
-test('B x 1', () => {
-  // SETUP
-  
-  // Checkout
-  const SUT = "B";
-  let checkoutList = [ SUT ];
-
-  // Expected
-  let expectedQuantity = checkoutList.length;
-  let expectedFullPrice = B_PRODUCT.price * checkoutList.length;
-  let expectedSpecialPrice = B_PRODUCT.price * checkoutList.length;
-
-  // EXERCISE
-  const actualResult = Checkout(checkoutList, CATALOGUE);
-
-  // ASSERT
-  expect(actualResult[SUT].quantity).toEqual(expectedQuantity);
-  expect(actualResult[SUT].fullPrice).toEqual(expectedFullPrice);
-  expect(actualResult[SUT].specialPrice).toEqual(expectedSpecialPrice);
-});
-
-test('B x 2 no rule', () => {
-  // SETUP
-  
-  // Checkout
-  const SUT = "B";
-  let checkoutList = [ SUT, SUT ];
-
-  // Expected
-  let expectedQuantity = checkoutList.length;
-  let expectedFullPrice = B_PRODUCT.price * checkoutList.length;
-  let expectedSpecialPrice = B_PRODUCT.price * checkoutList.length;
-
-  // EXERCISE
-  const actualResult = Checkout(checkoutList, CATALOGUE);
-
-  // ASSERT
-  expect(actualResult[SUT].quantity).toEqual(expectedQuantity);
-  expect(actualResult[SUT].fullPrice).toEqual(expectedFullPrice);
-  expect(actualResult[SUT].specialPrice).toEqual(expectedSpecialPrice);
-});
-
-test('C x 1', () => {
-  // SETUP
-  
-  // Checkout
-  const SUT = "C";
-  let checkoutList = [ SUT ];
-
-  // Expected
-  let expectedQuantity = checkoutList.length;
-  let expectedFullPrice = C_PRODUCT.price * checkoutList.length;
-  let expectedSpecialPrice = C_PRODUCT.price * checkoutList.length;
-
-  // EXERCISE
-  const actualResult = Checkout(checkoutList, CATALOGUE);
-
-  // ASSERT
-  expect(actualResult[SUT].quantity).toEqual(expectedQuantity);
-  expect(actualResult[SUT].fullPrice).toEqual(expectedFullPrice);
-  expect(actualResult[SUT].specialPrice).toEqual(expectedSpecialPrice);
-});
-
-test('D x 1', () => {
-  // SETUP
-  
-  // Checkout
-  const SUT = "D";
-  let checkoutList = [ SUT ];
-
-  // Expected
-  let expectedQuantity = checkoutList.length;
-  let expectedFullPrice = D_PRODUCT.price * checkoutList.length;
-  let expectedSpecialPrice = D_PRODUCT.price * checkoutList.length;
-
-  // EXERCISE
-  const actualResult = Checkout(checkoutList, CATALOGUE);
-
-  // ASSERT
-  expect(actualResult[SUT].quantity).toEqual(expectedQuantity);
-  expect(actualResult[SUT].fullPrice).toEqual(expectedFullPrice);
-  expect(actualResult[SUT].specialPrice).toEqual(expectedSpecialPrice);
-});
-
-test('A x 2 with rule', () => {
-  // SETUP
-
-  // Checkout
-  const SUT = "A";
-  let checkoutList = [ SUT, SUT ];
-
-  // Rules
-  let ruleSet: IRuleSet = {};
-  ruleSet[SUT] = A_RULE;
-
-  // Expected
-  let expectedQuantity = checkoutList.length;
-  let expectedFullPrice = A_PRODUCT.price * checkoutList.length;
-  let expectedSpecialPrice = A_PRODUCT.price * checkoutList.length;
-  
-  // EXERCISE
-  const actualResult = Checkout(checkoutList, CATALOGUE, ruleSet);
-
-  // ASSERT
-  expect(actualResult[SUT].quantity).toEqual(expectedQuantity);
-  expect(actualResult[SUT].fullPrice).toEqual(expectedFullPrice);
-  expect(actualResult[SUT].specialPrice).toEqual(expectedSpecialPrice);
-});
-
-test('A x 3 with rule', () => {
-  // SETUP
-
-  // Checkout
-  const SUT = "A";
-  let checkoutList = [ SUT, SUT, SUT ];
-
-  // Rules
-  let ruleSet: IRuleSet = {};
-  ruleSet[SUT] = A_RULE;
-
-  // Expected
-  let expectedQuantity = checkoutList.length;
-  let expectedFullPrice = A_PRODUCT.price * checkoutList.length;
-  let expectedSpecialPrice = 130;
-  
-  // EXERCISE
-  const actualResult = Checkout(checkoutList, CATALOGUE, ruleSet);
-
-  // ASSERT
-  expect(actualResult[SUT].quantity).toEqual(expectedQuantity);
-  expect(actualResult[SUT].fullPrice).toEqual(expectedFullPrice);
-  expect(actualResult[SUT].specialPrice).toEqual(expectedSpecialPrice);
-});
-
-test('A x 6 with rule', () => {
-  // SETUP
-
-  // Checkout
-  const SUT = "A";
-  let checkoutList = [ SUT, SUT, SUT, SUT, SUT, SUT ];
-
-  // Rules
-  let ruleSet: IRuleSet = {};
-  ruleSet[SUT] = A_RULE;
-
-  // Expected
-  let expectedQuantity = checkoutList.length;
-  let expectedFullPrice = A_PRODUCT.price * checkoutList.length;
-  let expectedSpecialPrice = 260;
-  
-  // EXERCISE
-  const actualResult = Checkout(checkoutList, CATALOGUE, ruleSet);
-
-  // ASSERT
-  expect(actualResult[SUT].quantity).toEqual(expectedQuantity);
-  expect(actualResult[SUT].fullPrice).toEqual(expectedFullPrice);
-  expect(actualResult[SUT].specialPrice).toEqual(expectedSpecialPrice);
-});
-
-test('A x 7 with rule', () => {
-  // SETUP
-
-  // Checkout
-  const SUT = "A";
-  let checkoutList = [ SUT, SUT, SUT, SUT, SUT, SUT, SUT ];
-
-  // Rules
-  let ruleSet: IRuleSet = {};
-  ruleSet[SUT] = A_RULE;
-
-  // Expected
-  let expectedQuantity = checkoutList.length;
-  let expectedFullPrice = A_PRODUCT.price * checkoutList.length;
-  let expectedSpecialPrice = 260 +  A_PRODUCT.price;
-  
-  // EXERCISE
-  const actualResult = Checkout(checkoutList, CATALOGUE, ruleSet);
-
-  // ASSERT
-  expect(actualResult[SUT].quantity).toEqual(expectedQuantity);
-  expect(actualResult[SUT].fullPrice).toEqual(expectedFullPrice);
-  expect(actualResult[SUT].specialPrice).toEqual(expectedSpecialPrice);
-});
-
-test('Assignment test Case - A', () => {
-  // SETUP
-
-  // Checkout
-  const SUT = "A";
-  let checkoutList = SUT.split("");
-
-  // Rules
-  let ruleSet: IRuleSet = {
-    "A": A_RULE,
-    "B": B_RULE
-  };
-
-  // Expected
-  let expectedSpecialPrice = 50;
-  
-  // EXERCISE
-  const actualResult = Checkout(checkoutList, CATALOGUE, ruleSet);
-
-  // ASSERT
-  const totalPrice = Object.keys(actualResult).reduce((acc, key) => {
-    return acc + actualResult[key].specialPrice;
-  }, 0);
-  expect(totalPrice).toEqual(expectedSpecialPrice);
-});
-
-
-const ASSIGNEMENT_RESULTS = [
-  { checkout: "", expected: 0 },
-  { checkout: "A", expected: 50 },
-  { checkout: "AB", expected: 80 },
-  { checkout: "CDBA", expected: 115 },
-  { checkout: "AA", expected: 100 },
-  { checkout: "AAA", expected: 130 },
-  { checkout: "AAAA", expected: 180 },
-  { checkout: "AAAAA", expected: 230 },
-  { checkout: "AAAAAA", expected: 260 },
-  { checkout: "AAAB", expected: 160 },
-  { checkout: "AAABB", expected: 175 },
-  { checkout: "AAABBD", expected: 190 },
-  { checkout: "DABABA", expected: 190 }
+const TEST_CASES = [
+  // My own test Cases
+  { checkout: "A", expected: 50, rules: [] },
+  { checkout: "AA", expected: 100, rules: [] },
+  { checkout: "AAA", expected: 150, rules: [] },
+  { checkout: "B", expected: 30, rules: [] },
+  { checkout: "BB", expected: 60, rules: [] },
+  { checkout: "C", expected: 20, rules: [] },
+  { checkout: "D", expected: 15, rules: [] },
+  { checkout: "AAA", expected: 130, rules: [A_RULE] },
+  { checkout: "AAAAAAA", expected: 310, rules: [A_RULE] },
+  { checkout: "DDD", expected: 30, rules: [D_RULE] },
+  // Assignment Results
+  { checkout: "", expected: 0, rules: [ A_RULE, B_RULE] },
+  { checkout: "A", expected: 50, rules: [ A_RULE, B_RULE] },
+  { checkout: "AB", expected: 80, rules: [ A_RULE, B_RULE] },
+  { checkout: "CDBA", expected: 115, rules: [ A_RULE, B_RULE] },
+  { checkout: "AA", expected: 100, rules: [ A_RULE, B_RULE] },
+  { checkout: "AAA", expected: 130, rules: [ A_RULE, B_RULE] },
+  { checkout: "AAAA", expected: 180, rules: [ A_RULE, B_RULE] },
+  { checkout: "AAAAA", expected: 230, rules: [ A_RULE, B_RULE] },
+  { checkout: "AAAAAA", expected: 260, rules: [ A_RULE, B_RULE] },
+  { checkout: "AAAB", expected: 160, rules: [ A_RULE, B_RULE] },
+  { checkout: "AAABB", expected: 175, rules: [ A_RULE, B_RULE] },
+  { checkout: "AAABBD", expected: 190, rules: [ A_RULE, B_RULE] },
+  { checkout: "DABABA", expected: 190, rules: [ A_RULE, B_RULE] }
 ];
 
-ASSIGNEMENT_RESULTS.forEach(({ checkout, expected }) => {
+TEST_CASES.forEach(({ checkout, expected, rules }) => {
 
   test(`Assignment test Case - ${checkout}`, () => {
     // SETUP
@@ -338,11 +66,11 @@ ASSIGNEMENT_RESULTS.forEach(({ checkout, expected }) => {
     let checkoutList = SUT.split("");
   
     // Rules
-    let ruleSet: IRuleSet = {
-      "A": A_RULE,
-      "B": B_RULE
-    };
-  
+    let ruleSet: IRuleSet = {};
+    rules.forEach(rule => {
+      ruleSet[rule.productId] = rule;
+    });
+
     // Expected
     let expectedSpecialPrice = expected;
     

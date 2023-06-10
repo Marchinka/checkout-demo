@@ -32,10 +32,36 @@ export class MultipriceRule implements IRule {
 
         const discountedPrice = numberOfDiscounts * this.specialPrice;
         const regularPrice = numberOfFullpricedElements * productCheckout.productPrice;
-        
+
         return {
             ...productCheckout,
             specialPrice: discountedPrice + regularPrice
+        }
+    }
+}
+
+type PayForN_OneIsFreeRuleDto = {
+    productId: string;
+    quantity: number;
+};
+
+export class PayForN_OneIsFreeRule {
+    readonly productId: string;
+    readonly discountQuantity: number;
+
+    constructor({ productId, quantity }: PayForN_OneIsFreeRuleDto) {    
+        this.productId = productId;
+        this.discountQuantity = quantity;
+    }
+    
+    apply(productCheckout: IProductCheckout): IProductCheckout {
+        if (productCheckout.quantity < this.discountQuantity) return productCheckout;
+
+        const numberOfDiscounts = Math.trunc(productCheckout.quantity / this.discountQuantity);
+
+        return {
+            ...productCheckout,
+            specialPrice: productCheckout.fullPrice - productCheckout.productPrice * numberOfDiscounts
         }
     }
 }
