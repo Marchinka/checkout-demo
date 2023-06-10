@@ -58,7 +58,7 @@ const TEST_CASES = [
 
 TEST_CASES.forEach(({ checkout, expected, rules }) => {
 
-  test(`Assignment test Case - ${checkout}`, () => {
+  test(`Test Case - ${checkout} - Rules ${rules.map(r => r.productId).join(", ") || "none"}`, () => {
     // SETUP
   
     // Checkout
