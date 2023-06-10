@@ -4,28 +4,43 @@ import { IRuleSet } from "../Models/Rules";
 
 export const Checkout = (checkoutList: string[], cataglogue: Catalogue, rules: IRuleSet = {}): ICheckout => {  
     let checkoutResult: ICheckout = {};
-    
-    checkoutList.forEach((productId: string) => {
-        let product : IProduct = cataglogue[productId];
-        if (!checkoutResult[productId]) {
-            checkoutResult[productId] = {
-                quantity: 0,
-                fullPrice: 0,
-                specialPrice: 0,
-                productPrice: product.price
-            }
-        }
-        checkoutResult[productId].quantity++;
-        checkoutResult[productId].fullPrice += product.price;
-        checkoutResult[productId].specialPrice += product.price;
-    });
+    let result : Record<string, number> = countProductIds(checkoutList);
+    calculateFullPrice(result, checkoutResult, cataglogue);
+    calculateDiscounts(rules, checkoutResult);
+    return checkoutResult
+}
 
+const countProductIds = (productIds: string[]): Record<string, number>  => {
+    const count: Record<string, number> = {};
+  
+    for (const productId of productIds) {
+      if (count[productId]) {
+        count[productId]++;
+      } else {
+        count[productId] = 1;
+      }
+    }
+  
+    return count;
+};
+
+const calculateFullPrice = (result: Record<string, number>, checkoutResult: ICheckout, cataglogue: Catalogue) => {
+    Object.keys(result).forEach((productId: string) => {
+        checkoutResult[productId] = {
+            quantity: result[productId],
+            productPrice: cataglogue[productId].price,
+            fullPrice: result[productId] * cataglogue[productId].price,
+            specialPrice: result[productId] * cataglogue[productId].price
+        };
+    });
+};
+
+const calculateDiscounts = (rules: IRuleSet, checkoutResult: ICheckout) => {
     Object.keys(rules).forEach((productId: string) => {
         let rule = rules[productId];
         if (checkoutResult[productId]) {
             checkoutResult[productId] = rule.apply(checkoutResult[productId]);
         }
     });
+};
 
-    return checkoutResult
-}
