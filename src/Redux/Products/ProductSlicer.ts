@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../Store'
-import Product from '../../Models/Product'
+import IProduct from '../../Models/Product'
 
 interface ProductState {
-    list: Product[];
+    list: IProduct[];
 }
 
 const initialState: ProductState = {  
@@ -19,7 +19,7 @@ export const productSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    setProducts: (state, action: PayloadAction<Product[]>) => {
+    setProducts: (state, action: PayloadAction<IProduct[]>) => {
       state.list = action.payload
     },
   },
