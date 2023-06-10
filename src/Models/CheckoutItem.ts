@@ -2,7 +2,7 @@ export interface IProductCheckout {
     quantity: number;
     productPrice: number;
     fullPrice: number;
-    specialPrice: number;
+    finalPrice: number;
 }
 
 export interface ICheckout extends Record<string, IProductCheckout> {

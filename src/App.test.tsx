@@ -79,7 +79,7 @@ TEST_CASES.forEach(({ checkout, expected, rules }) => {
   
     // ASSERT
     const totalPrice = Object.keys(actualResult).reduce((acc, key) => {
-      return acc + actualResult[key].specialPrice;
+      return acc + actualResult[key].finalPrice;
     }, 0);
     expect(totalPrice).toEqual(expectedSpecialPrice);
   });

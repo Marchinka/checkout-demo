@@ -35,7 +35,7 @@ export class MultipriceRule implements IRule {
 
         return {
             ...productCheckout,
-            specialPrice: discountedPrice + regularPrice
+            finalPrice: discountedPrice + regularPrice
         }
     }
 }
@@ -61,7 +61,7 @@ export class PayForN_OneIsFreeRule {
 
         return {
             ...productCheckout,
-            specialPrice: productCheckout.fullPrice - productCheckout.productPrice * numberOfDiscounts
+            finalPrice: productCheckout.fullPrice - productCheckout.productPrice * numberOfDiscounts
         }
     }
 }

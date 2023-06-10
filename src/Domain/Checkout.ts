@@ -30,7 +30,7 @@ const calculateFullPrice = (result: Record<string, number>, checkoutResult: IChe
             quantity: result[productId],
             productPrice: cataglogue[productId].price,
             fullPrice: result[productId] * cataglogue[productId].price,
-            specialPrice: result[productId] * cataglogue[productId].price
+            finalPrice: result[productId] * cataglogue[productId].price
         };
     });
 };
