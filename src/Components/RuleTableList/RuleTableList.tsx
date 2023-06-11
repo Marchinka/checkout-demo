@@ -1,11 +1,15 @@
-import { TotalCheckout } from "../../Models/CheckoutItem";
-import { IProduct } from "../../Models/Product";
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { useAppDispatch } from "../../Redux/Hooks";
-import { deleteProduct } from "../../Redux/ProductSlicer";
+import { IRuleDto } from "../../Models/Rules";
+import { deleteRule, editRule, toggleModal } from "../../Redux/RulesSlicer";
 
-export const ProductTableList = (props: { items: IProduct[] }) => {    
+export const RuleTableList = (props: { items: IRuleDto[] }) => {    
     const dispatch = useAppDispatch();
+
+    const toggleEditRule = (rule: IRuleDto) => {
+        dispatch(editRule(rule));
+        dispatch(toggleModal(true));
+    };
 
     const CELL_CLASS = "px-6 py-4";
 
@@ -17,39 +21,38 @@ export const ProductTableList = (props: { items: IProduct[] }) => {
                                 Product Id
                             </th>
                             <th scope="col" className={CELL_CLASS}>
-                                Price (€)
+                                Type
                             </th>
                             <th scope="col" className={CELL_CLASS}>
-                                Image
+                                Properties
                             </th>
                             <th scope="col" className={CELL_CLASS}></th>
                         </tr>
                     </thead>
                     <tbody>
                         {props.items.map((item) => {
-                            return (<tr key={item.id} className="bg-white border-b">
+                            return (<tr key={item.productId} className="bg-white border-b">
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            {item.id}
+                                            {item.productId}
                                         </th>
+                                        <td className="px-6 py-4 capitalize">
+                                            {item.type}
+                                        </td>
                                         <td className="px-6 py-4">
-                                            {item.price}
+                                            {Object.keys(item.payload).map(key => {
+                                                return (<div key={key}>
+                                                            <span className="font-medium capitalize">{key}</span>: {item.payload[key]}
+                                                        </div>)
+                                            })}
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-4">
-                                                <img
-                                                    src={item.img}
-                                                    className="h-12 w-12 object-cover"
-                                                />
-                                                {item.img}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-4">
-                                            <button onClick={() => dispatch(deleteProduct(item.id))}
+                                            <button onClick={() => dispatch(deleteRule(item.productId))}
                                                     className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                                                 <TrashIcon className="block h-4 w-4"/>
                                             </button>
-                                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
+                                            <button onClick={() => toggleEditRule(item)}
+                                                    className="bg-blue-500 hover:bg-blue-500 text-white font-bold py-2 px-4 border border-blue-700 rounded">
                                                 <PencilIcon className="block h-4 w-4"/>
                                             </button>
                                             </div>

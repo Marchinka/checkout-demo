@@ -5,14 +5,18 @@ import { IRuleSet } from "../Models/Rules";
 export const CalculateCheckout = (checkoutList: string[], cataglogue: ICatalogue, rules: IRuleSet = {}): TotalCheckout => {  
     let checkoutResult: ICheckout = {};
     let result : Record<string, number> = countProductIds(checkoutList);
+
     calculateFullPrice(result, checkoutResult, cataglogue);
+
     calculateDiscounts(rules, checkoutResult);
+
     let totalFullPrice = 0;
     let totalFinalPrice = 0;
     Object.keys(checkoutResult).forEach((key) => {
         totalFinalPrice += checkoutResult[key].finalPrice;
         totalFullPrice += checkoutResult[key].fullPrice;
     });
+
     return {
         checkout: checkoutResult,
         totalFinalPrice: totalFinalPrice || 0, 
@@ -36,6 +40,8 @@ const countProductIds = (productIds: string[]): Record<string, number>  => {
 
 const calculateFullPrice = (result: Record<string, number>, checkoutResult: ICheckout, catalogue: ICatalogue) => {
     Object.keys(result).forEach((productId: string) => {
+        if (!catalogue[productId]) return;
+        
         checkoutResult[productId] = {
             quantity: result[productId],
             productPrice: catalogue[productId]?.price,

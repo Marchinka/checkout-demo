@@ -29,6 +29,7 @@ const B_RULE: IRule = new MultipriceRule({ productId: "B", quantity: 2, specialP
 
 // This rule is  not part of the assignment, but I invented it to test the rule engine and if the solution is generic enough
 const D_RULE: IRule = new PayForN_OneIsFreeRule({ productId: "D", quantity: 3 });
+const F_RULE: IRule = new PayForN_OneIsFreeRule({ productId: "F", quantity: 3 });
 
 const TEST_CASES = [
   // My own test Cases
@@ -42,7 +43,8 @@ const TEST_CASES = [
   { checkout: "AAA", expected: 130, rules: [A_RULE] },
   { checkout: "AAAAAAA", expected: 310, rules: [A_RULE] },
   { checkout: "DDD", expected: 30, rules: [D_RULE] },
-  { checkout: "F (unexisting product)", expected: 0, rules: [] },
+  { checkout: "F", expected: 0, rules: [] },
+  { checkout: "FFFA", expected: 50, rules: [F_RULE] },
   // Assignment Results
   { checkout: "", expected: 0, rules: [ A_RULE, B_RULE] },
   { checkout: "A", expected: 50, rules: [ A_RULE, B_RULE] },

@@ -11,14 +11,14 @@ export const RuleFactory = {
                 case "multiprice":
                     ruleSet[rule.productId] = new MultipriceRule({
                         productId: rule.productId,
-                        quantity: rule.paylod.quantity,
-                        specialPrice: rule.paylod.specialPrice
+                        quantity: rule.payload.quantity,
+                        specialPrice: rule.payload.specialPrice
                     });
                     break;
                 case "payForNOneIsFree":
                     ruleSet[rule.productId] = new PayForN_OneIsFreeRule({
                         productId: rule.productId,
-                        quantity: rule.paylod.quantity
+                        quantity: rule.payload.quantity
                     });
                     break;
                 default:

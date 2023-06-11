@@ -39,7 +39,6 @@ export const catalogeSlice = createSlice({
 
 export const { setCatalogue, deleteProduct, upsertProduct, toggleModal, editProduct } = catalogeSlice.actions
 
-// Other code such as selectors can use the imported `RootState` type
 export const selectCatalogue = (state: RootState) => state.products.catalogue
 
 export default catalogeSlice.reducer

@@ -4,7 +4,7 @@ import { IProductCheckout } from "./CheckoutItem";
 export interface IRuleDto {
     type: "multiprice" | "payForNOneIsFree";
     productId: string;
-    paylod?: any;
+    payload?: any;
 }
 
 

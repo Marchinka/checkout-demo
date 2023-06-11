@@ -16,8 +16,8 @@ const CATALOGUE: ICatalogue= {
 };
 
 const RULES : IRuleDto[] = [
-    { type: "multiprice", productId: "A", paylod: { quantity: 3, specialPrice: 130 } },
-    { type: "multiprice", productId: "B", paylod: { quantity: 2, specialPrice: 45 } }
+    { type: "multiprice", productId: "A", payload: { quantity: 3, specialPrice: 130 } },
+    { type: "multiprice", productId: "B", payload: { quantity: 2, specialPrice: 45 } }
 ];
 
 export const AppRepository = {
