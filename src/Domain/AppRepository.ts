@@ -3,10 +3,10 @@ import { MultipriceRule } from "../Models/MultipriceRule";
 import { ICatalogue, IProduct } from "../Models/Product";
 import { IRule, IRuleDto, IRuleSet } from "../Models/Rules";
 
-const A_PRODUCT = { id: "A", price: 50 };
-const B_PRODUCT = { id: "B", price: 30 };
-const C_PRODUCT = { id: "C", price: 20 };
-const D_PRODUCT = { id: "D", price: 15 };
+const A_PRODUCT = { id: "A", price: 50, img: "https://source.unsplash.com/P2X7NDx_GP0" };
+const B_PRODUCT = { id: "B", price: 30, img: "https://source.unsplash.com/ezSFnAFi9hY" };
+const C_PRODUCT = { id: "C", price: 20, img: "https://source.unsplash.com/VI2rIoZUrks" };
+const D_PRODUCT = { id: "D", price: 15, img: "https://source.unsplash.com/hUkZv0Y47Ic" };
 
 const CATALOGUE: ICatalogue= {
   "A": A_PRODUCT,

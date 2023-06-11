@@ -17,10 +17,19 @@ export const checkoutSlicer = createSlice({
     setCheckout: (state, action: PayloadAction<string[]>) => {
       state.list = action.payload
     },
+    addProduct: (state, action: PayloadAction<string>) => {
+      state.list.push(action.payload)
+    },
+    removeProduct: (state, action: PayloadAction<string>) => {
+      const index = state.list.indexOf(action.payload);
+      if (index > -1) {
+        state.list.splice(index, 1);
+      }
+    }
   },
 })
 
-export const { setCheckout } = checkoutSlicer.actions
+export const { setCheckout, addProduct, removeProduct } = checkoutSlicer.actions
 
 export const selectCheckout = (state: RootState) => state.checkout.list;
 

@@ -1,4 +1,4 @@
-import { Checkout } from "./Domain/Checkout";
+import { CalculateCheckout } from "./Domain/Checkout";
 import { ICheckout } from "./Models/CheckoutItem";
 import { MultipriceRule } from "./Models/MultipriceRule";
 import { PayForN_OneIsFreeRule } from "./Models/PayForN_OneIsFreeRule";
@@ -77,13 +77,10 @@ TEST_CASES.forEach(({ checkout, expected, rules }) => {
     let expectedSpecialPrice = expected;
     
     // EXERCISE
-    const actualResult = Checkout(checkoutList, CATALOGUE, ruleSet);
+    const actualResult = CalculateCheckout(checkoutList, CATALOGUE, ruleSet);
   
     // ASSERT
-    const totalPrice = Object.keys(actualResult).reduce((acc, key) => {
-      return acc + actualResult[key].finalPrice;
-    }, 0);
-    expect(totalPrice).toEqual(expectedSpecialPrice);
+    expect(actualResult.totalFinalPrice).toEqual(expectedSpecialPrice);
   });
 
 });
