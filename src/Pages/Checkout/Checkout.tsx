@@ -7,10 +7,10 @@ import { IProduct } from "../../Models/Product";
 import { RuleFactory } from "../../Models/RuleFactory";
 import { IRuleSet } from "../../Models/Rules";
 import { addProduct, removeProduct } from "../../Redux/CheckoutSlicer";
-import { useAppSelector, useappDispatch } from "../../Redux/Hooks";
+import { useAppSelector, useAppDispatch } from "../../Redux/Hooks";
 
 export const Checkout = () => {
-    const dispatch = useappDispatch();
+    const dispatch = useAppDispatch();
     const catalogue = useAppSelector(state => state.products.catalogue);
     const checkoutList = useAppSelector(state => state.checkout.list);
     const rules = useAppSelector(state => state.rules.rules);

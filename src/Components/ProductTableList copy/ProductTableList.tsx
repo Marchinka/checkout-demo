@@ -1,15 +1,11 @@
+import { TotalCheckout } from "../../Models/CheckoutItem";
 import { IProduct } from "../../Models/Product";
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { useAppDispatch } from "../../Redux/Hooks";
-import { deleteProduct, editProduct, toggleModal } from "../../Redux/ProductSlicer";
+import { deleteProduct } from "../../Redux/ProductSlicer";
 
 export const ProductTableList = (props: { items: IProduct[] }) => {    
     const dispatch = useAppDispatch();
-
-    const toggleEditProduct = (product: IProduct) => {
-        dispatch(editProduct(product));
-        dispatch(toggleModal(true));
-    };
 
     const CELL_CLASS = "px-6 py-4";
 
@@ -53,8 +49,7 @@ export const ProductTableList = (props: { items: IProduct[] }) => {
                                                     className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                                                 <TrashIcon className="block h-4 w-4"/>
                                             </button>
-                                            <button onClick={() => toggleEditProduct(item)}
-                                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
+                                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
                                                 <PencilIcon className="block h-4 w-4"/>
                                             </button>
                                             </div>

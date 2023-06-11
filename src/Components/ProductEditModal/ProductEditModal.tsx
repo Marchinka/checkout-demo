@@ -1,66 +1,80 @@
-import { TotalCheckout } from "../../Models/CheckoutItem";
-import { IProduct } from "../../Models/Product";
-import { ExclamationTriangleIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline'
-import { useappDispatch as useAppDispatch, useAppSelector } from "../../Redux/Hooks";
-import { deleteProduct, toggleModal } from "../../Redux/ProductSlicer";
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { useAppDispatch as useAppDispatch, useAppSelector } from "../../Redux/Hooks";
+import { toggleModal, upsertProduct } from "../../Redux/ProductSlicer";
+import { useEffect, useState } from "react";
+import { AppModal } from "../AppModal/AppModal";
+
+const CLASSES = {
+    input: "appearance-none block w-full bg-gray-200 text-gray-700 border py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white",
+    label: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2",
+}
 
 export const ProductEditModal = () => {    
     const dispatch = useAppDispatch();
     const showModal = useAppSelector(state => state.products.showEditModal);
+    const productInEdit = useAppSelector(state => state.products.productInEdit);
 
-    const closeModal = () => dispatch(toggleModal(false));
+    const toggle = (value: boolean) => dispatch(toggleModal(value));
 
-    return (<Transition.Root show={showModal} as={Fragment}>
-                <Dialog as="div" className="relative z-10" onClose={closeModal}>
-                    <Transition.Child
-                        as={Fragment}
-                        enter="ease-out duration-300"
-                        enterFrom="opacity-0"
-                        enterTo="opacity-100"
-                        leave="ease-in duration-200"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                    >
-                        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-                    </Transition.Child>
-        
-                    <div className="fixed inset-0 z-10 overflow-y-auto">
-                        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <Transition.Child
-                            as={Fragment}
-                            enter="ease-out duration-300"
-                            enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                            enterTo="opacity-100 translate-y-0 sm:scale-100"
-                            leave="ease-in duration-200"
-                            leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        >
-                            <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                                <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                    Ciao
-                                </div>
-                                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+    const [productId, setProductId] = useState("");
+    const [price, setPrice] = useState(0);
+    const [img, setImg] = useState("");
+
+    useEffect(() => {
+        setProductId(productInEdit?.id || "");
+        setPrice(productInEdit?.price || 0);
+        setImg(productInEdit?.img || "");
+    }, [productInEdit]);
+
+    const saveProduct = () => {
+        if (!productId || !price || !img) return;
+        dispatch(upsertProduct({ productId: productInEdit?.id as string, product: { id: productId, price, img }}))
+        toggle(false);
+    };
+
+    return (<AppModal   isOpen={showModal} toggleModal={toggle} 
+                        content={<form className="w-full max-w-lg">
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                            <label className={CLASSES.label}>
+                                            Product Id
+                                            </label>
+                                            <input className={CLASSES.input} id="grid-first-name" type="text"
+                                                    value={productId} onChange={e => setProductId(e.target.value)}/>
+                                            {productId != null || <p className="text-red-500 text-xs italic">Please fill out this field.</p>}
+                                        </div>
+                                        <div className="w-full md:w-1/2 px-3">
+                                            <label className={CLASSES.label}>
+                                            Price
+                                            </label>
+                                            <input className={CLASSES.input} id="grid-last-name" type="number"
+                                                    value={price} onChange={e => setPrice(Number(e.target.value))}/>
+                                            {price > 0 || <p className="text-red-500 text-xs italic">Please fill out this field.</p>}
+                                        </div>
+                                        <div className="w-full px-3 mt-4">
+                                            <label className={CLASSES.label}>
+                                            URL
+                                            </label>
+                                            <input className={CLASSES.input} id="grid-last-name" type="text"
+                                                    value={img} onChange={e => setImg(e.target.value)} />
+                                            {img != null || <p className="text-red-500 text-xs italic">Please fill out this field.</p>}
+                                        </div>
+                                    </div>
+                                </form>} 
+                        footer={<>
                                     <button
                                         type="button"
-                                        className="inline-flex w-full justify-center rounded-md bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                                        onClick={() => closeModal()}
-                                    >
-                                        Deactivate
-                                    </button>
-                                    <button
+                                        className="inline-flex w-full justify-center rounded-md bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+                                        onClick={() => saveProduct()}
+                                        >
+                                        Save
+                                        </button>
+                                        <button
                                         type="button"
                                         className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                                        onClick={() => closeModal()}
-                                    >
+                                        onClick={() => toggle(false)}
+                                        >
                                         Cancel
-                                    </button>
-                                </div>
-                            </Dialog.Panel>
-                        </Transition.Child>
-                        </div>
-                    </div>
-                </Dialog>
-            </Transition.Root>)
+                                        </button>
+                                </>} 
+                        />)
 }

@@ -8,11 +8,11 @@ import { IProduct } from "../../Models/Product";
 
 export const ProductCard = (props: { product: IProduct, children?: React.ReactNode }) => {    
     
-    return (<div>
-              <div className="w-full overflow-hidden rounded-md bg-gray-200 lg:h-80">
+    return (<div className="group relative">
+              <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
                   <img
-                    src={props.product.img}
-                    className="h-full w-full object-cover"
+                  src={props.product.img}
+                  className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                   />
               </div>
               <div className="mt-4 flex justify-between">

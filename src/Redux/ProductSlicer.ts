@@ -22,16 +22,22 @@ export const catalogeSlice = createSlice({
     deleteProduct: (state, action: PayloadAction<string>) => {
       delete state.catalogue[action.payload];
     },
-    upsertProduct: (state, action: PayloadAction<IProduct>) => {
-      state.catalogue[action.payload.id] = action.payload;
+    upsertProduct: (state, action: PayloadAction<{ productId: string, product: IProduct}>) => {
+      if (action.payload.productId != action.payload.product.id) {
+        delete state.catalogue[action.payload.productId];
+      }
+      state.catalogue[action.payload.product.id] = action.payload.product;
     },
     toggleModal: (state, action: PayloadAction<boolean>) => {
       state.showEditModal = action.payload;
+    },
+    editProduct: (state, action: PayloadAction<IProduct>) => {
+      state.productInEdit = action.payload;
     }
   },
 })
 
-export const { setCatalogue, deleteProduct, upsertProduct, toggleModal } = catalogeSlice.actions
+export const { setCatalogue, deleteProduct, upsertProduct, toggleModal, editProduct } = catalogeSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectCatalogue = (state: RootState) => state.products.catalogue
