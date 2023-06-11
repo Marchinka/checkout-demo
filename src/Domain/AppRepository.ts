@@ -26,7 +26,7 @@ export const AppRepository = {
         console.log("Fetch checkout list");
         return new Promise(resolve => {
             setTimeout(() => {
-                resolve(["A", "D"]);
+                resolve([]);
             }, 1000);
         });
     },
