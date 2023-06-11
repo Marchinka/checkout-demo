@@ -1,4 +1,4 @@
-import { CalculateCheckout } from "./Domain/Checkout";
+import { CalculateCheckout } from "./Domain/CalculateCheckout";
 import { ICheckout } from "./Models/CheckoutItem";
 import { MultipriceRule } from "./Models/MultipriceRule";
 import { PayForN_OneIsFreeRule } from "./Models/PayForN_OneIsFreeRule";
