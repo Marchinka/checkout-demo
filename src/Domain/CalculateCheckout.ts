@@ -1,5 +1,5 @@
 import { ICheckout, TotalCheckout } from "../Models/CheckoutItem"
-import { ICatalogue, IProduct } from "../Models/Product"
+import { ICatalogue } from "../Models/Product"
 import { IRuleSet } from "../Models/Rules";
 
 export const CalculateCheckout = (checkoutList: string[], cataglogue: ICatalogue, rules: IRuleSet = {}): TotalCheckout => {  
@@ -15,7 +15,8 @@ export const CalculateCheckout = (checkoutList: string[], cataglogue: ICatalogue
     });
     return {
         checkout: checkoutResult,
-        totalFinalPrice, totalFullPrice
+        totalFinalPrice: totalFinalPrice || 0, 
+        totalFullPrice: totalFullPrice || 0
     }
 }
 
@@ -33,13 +34,13 @@ const countProductIds = (productIds: string[]): Record<string, number>  => {
     return count;
 };
 
-const calculateFullPrice = (result: Record<string, number>, checkoutResult: ICheckout, cataglogue: ICatalogue) => {
+const calculateFullPrice = (result: Record<string, number>, checkoutResult: ICheckout, catalogue: ICatalogue) => {
     Object.keys(result).forEach((productId: string) => {
         checkoutResult[productId] = {
             quantity: result[productId],
-            productPrice: cataglogue[productId].price,
-            fullPrice: result[productId] * cataglogue[productId].price,
-            finalPrice: result[productId] * cataglogue[productId].price
+            productPrice: catalogue[productId]?.price,
+            fullPrice: result[productId] * catalogue[productId]?.price || 0,
+            finalPrice: result[productId] * catalogue[productId]?.price || 0
         };
     });
 };

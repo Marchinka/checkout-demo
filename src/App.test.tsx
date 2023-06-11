@@ -42,6 +42,7 @@ const TEST_CASES = [
   { checkout: "AAA", expected: 130, rules: [A_RULE] },
   { checkout: "AAAAAAA", expected: 310, rules: [A_RULE] },
   { checkout: "DDD", expected: 30, rules: [D_RULE] },
+  { checkout: "F (unexisting product)", expected: 0, rules: [] },
   // Assignment Results
   { checkout: "", expected: 0, rules: [ A_RULE, B_RULE] },
   { checkout: "A", expected: 50, rules: [ A_RULE, B_RULE] },
