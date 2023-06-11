@@ -7,11 +7,7 @@ interface ProductState {
 }
 
 const initialState: ProductState = {  
-    catalogue: {
-      "A": { id: 'A', price: 100 },
-      "B": { id: 'B', price: 100 },
-      "C": { id: 'C', price: 100 },
-    }
+    catalogue: {}
 };
 
 export const productSlice = createSlice({
