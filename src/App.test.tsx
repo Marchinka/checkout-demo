@@ -1,7 +1,9 @@
 import { Checkout } from "./Domain/Checkout";
 import { ICheckout } from "./Models/CheckoutItem";
-import { Catalogue } from "./Models/Product";
-import { IRule, IRuleSet, MultipriceRule, PayForN_OneIsFreeRule } from "./Models/Rules";
+import { MultipriceRule } from "./Models/MultipriceRule";
+import { PayForN_OneIsFreeRule } from "./Models/PayForN_OneIsFreeRule";
+import { ICatalogue } from "./Models/Product";
+import { IRule, IRuleSet, } from "./Models/Rules";
 
 // | Item | Unit Price | Special Price |
 // | ---- | ---------- | ------------- |
@@ -15,7 +17,7 @@ const B_PRODUCT = { id: "B", price: 30 };
 const C_PRODUCT = { id: "C", price: 20 };
 const D_PRODUCT = { id: "D", price: 15 };
 
-const CATALOGUE: Catalogue= {
+const CATALOGUE: ICatalogue= {
   "A": A_PRODUCT,
   "B": B_PRODUCT,
   "C": C_PRODUCT,

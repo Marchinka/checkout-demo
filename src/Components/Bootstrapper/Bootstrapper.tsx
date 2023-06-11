@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo } from "react"
 import { AppRepository } from "../../Domain/AppRepository";
-import { useAppDispatch } from "../../Redux/Hooks";
-import { setProducts } from "../../Redux/Products/ProductSlicer";
+import { useappDispatch } from "../../Redux/Hooks";
+import { setCatalogue } from "../../Redux/ProductSlicer";
+import { setRules } from "../../Redux/RulesSlicer";
+import { setCheckout } from "../../Redux/CheckoutSlicer";
 
 export const Bootstrapper = (props: { children: React.ReactNode }) => {    
-    const dispatch = useAppDispatch();
+    const dispatch = useappDispatch();
 
     const fecthInitialData = () => {
         const fetchData = async () => {
@@ -17,7 +19,9 @@ export const Bootstrapper = (props: { children: React.ReactNode }) => {
       
         fetchData()
           .then(({ catalogue, rules, checkoutList }) => {
-            dispatch(setProducts(catalogue));
+            dispatch(setCatalogue(catalogue));
+            dispatch(setRules(rules));
+            dispatch(setCheckout(checkoutList));
           })
           .catch(console.error);
     };

@@ -3,5 +3,5 @@ export  interface IProduct {
     price: number;
 }
 
-export interface Catalogue extends Record<string, IProduct> {
+export interface ICatalogue extends Record<string, IProduct> {
 }

@@ -1,8 +1,8 @@
 import { ICheckout } from "../Models/CheckoutItem"
-import { Catalogue, IProduct } from "../Models/Product"
+import { ICatalogue, IProduct } from "../Models/Product"
 import { IRuleSet } from "../Models/Rules";
 
-export const Checkout = (checkoutList: string[], cataglogue: Catalogue, rules: IRuleSet = {}): ICheckout => {  
+export const Checkout = (checkoutList: string[], cataglogue: ICatalogue, rules: IRuleSet = {}): ICheckout => {  
     let checkoutResult: ICheckout = {};
     let result : Record<string, number> = countProductIds(checkoutList);
     calculateFullPrice(result, checkoutResult, cataglogue);
@@ -24,7 +24,7 @@ const countProductIds = (productIds: string[]): Record<string, number>  => {
     return count;
 };
 
-const calculateFullPrice = (result: Record<string, number>, checkoutResult: ICheckout, cataglogue: Catalogue) => {
+const calculateFullPrice = (result: Record<string, number>, checkoutResult: ICheckout, cataglogue: ICatalogue) => {
     Object.keys(result).forEach((productId: string) => {
         checkoutResult[productId] = {
             quantity: result[productId],
